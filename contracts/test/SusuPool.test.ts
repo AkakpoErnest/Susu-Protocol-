@@ -333,17 +333,17 @@ describe('SusuPool', function () {
 
     it('should pay correct recipient after all contribute', async function () {
       const recipient = payoutOrder[0];
-      const recipientSigner = [alice, bob, charlie].find(
-        (s) => s.address.toLowerCase() === recipient.toLowerCase()
-      )!;
 
+      // Capture balance before any contributions are made
       const before = await mockUSDC.balanceOf(recipient);
       await approveAndContribute(pool, alice);
       await approveAndContribute(pool, bob);
       await approveAndContribute(pool, charlie);
       const after = await mockUSDC.balanceOf(recipient);
 
-      expect(after - before).to.equal(CONTRIBUTION * 3n);
+      // Recipient contributes 1×CONTRIBUTION and receives 3×CONTRIBUTION
+      // Net gain = 3×CONTRIBUTION - 1×CONTRIBUTION = 2×CONTRIBUTION
+      expect(after - before).to.equal(CONTRIBUTION * 2n);
     });
 
     it('should advance to cycle 2 after payout', async function () {
@@ -461,18 +461,23 @@ describe('SusuPool', function () {
       await pool.connect(charlie).joinPool();
       await pool.connect(operator).startPool();
 
-      const balancesBefore: bigint[] = [];
-      for (const signer of [alice, bob, charlie]) {
-        await approveAndContribute(pool, signer);
-        balancesBefore.push(await mockUSDC.balanceOf(signer.address));
-      }
+      // Only alice and bob contribute (not charlie) — contributing all 3 would
+      // auto-trigger a payout, advancing the cycle and resetting contributions.
+      const aliceBefore = await mockUSDC.balanceOf(alice.address);
+      const bobBefore = await mockUSDC.balanceOf(bob.address);
+      const charlieBefore = await mockUSDC.balanceOf(charlie.address);
+
+      await approveAndContribute(pool, alice);
+      await approveAndContribute(pool, bob);
+      // charlie has not contributed
 
       await pool.connect(operator).emergencyCancel('Refund test');
 
-      for (let i = 0; i < 3; i++) {
-        const after = await mockUSDC.balanceOf([alice, bob, charlie][i].address);
-        expect(after).to.equal(balancesBefore[i] + CONTRIBUTION);
-      }
+      // Alice and Bob should be refunded their contributions
+      expect(await mockUSDC.balanceOf(alice.address)).to.equal(aliceBefore);
+      expect(await mockUSDC.balanceOf(bob.address)).to.equal(bobBefore);
+      // Charlie never contributed — balance unchanged
+      expect(await mockUSDC.balanceOf(charlie.address)).to.equal(charlieBefore);
     });
 
     it('should emit PoolCancelled', async function () {
