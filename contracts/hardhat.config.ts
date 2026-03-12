@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from 'hardhat/config';
 import '@nomicfoundation/hardhat-toolbox';
+import '@parity/hardhat-polkadot-resolc';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -20,6 +21,17 @@ const config: HardhatUserConfig = {
       evmVersion: 'paris',
     },
   },
+  resolc: {
+    compilerSource: 'npm',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+      evmVersion: 'paris',
+      viaIR: true,
+    },
+  },
   networks: {
     hardhat: {
       chainId: 31337,
@@ -30,10 +42,11 @@ const config: HardhatUserConfig = {
     },
     westend: {
       url: WESTEND_RPC_URL,
-      chainId: 420420421,
+      chainId: 420420417,
       accounts: [PRIVATE_KEY],
       gasPrice: 1000000000,
       gas: 5000000,
+      polkadot: true,
     },
   },
   paths: {
