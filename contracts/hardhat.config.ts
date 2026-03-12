@@ -17,6 +17,7 @@ const config: HardhatUserConfig = {
         runs: 200,
       },
       viaIR: true,
+      evmVersion: 'paris',
     },
   },
   networks: {
@@ -31,7 +32,8 @@ const config: HardhatUserConfig = {
       url: WESTEND_RPC_URL,
       chainId: 420420421,
       accounts: [PRIVATE_KEY],
-      gasPrice: 'auto',
+      gasPrice: 1000000000,
+      gas: 5000000,
     },
   },
   paths: {
