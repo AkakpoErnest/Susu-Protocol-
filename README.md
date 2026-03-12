@@ -94,14 +94,14 @@ User → SusuPool.joinPool()      → Factory.registerMember()
 
 ## Contract Addresses (Westend Testnet)
 
-> Deploy with `pnpm contracts:deploy` and update this table
+> Run `pnpm contracts:deploy` (or `node contracts/scripts/deploy-direct.ts`) to deploy, then copy the addresses below from `contracts/deployments/westend.json`.
 
 | Contract | Address |
 |----------|---------|
-| MockUSDC | `TBD — run deploy script` |
-| ReputationRegistry | `TBD — run deploy script` |
-| SusuFactory | `TBD — run deploy script` |
-| Demo Pool | `TBD — created by deploy script` |
+| MockUSDC | `TBD (see contracts/deployments/westend.json)` |
+| ReputationRegistry | `TBD (see contracts/deployments/westend.json)` |
+| SusuFactory | `TBD (see contracts/deployments/westend.json)` |
+| Demo Pool | `TBD (see contracts/deployments/westend.json)` |
 
 **Block Explorer**: https://blockscout.westend.asset-hub.paritytech.net
 
