@@ -131,6 +131,8 @@ cp .env.example .env
 # Edit .env and add your PRIVATE_KEY (with leading 0x)
 ```
 
+> **Note:** The Hardhat config pins `evmVersion = "paris"` and uses fixed `gasPrice`/`gas` values to avoid estimation issues on Westend.
+
 ### 3. Compile contracts
 
 ```bash
