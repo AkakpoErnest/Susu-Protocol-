@@ -2,7 +2,7 @@
 
 > *"My grandmother ran a susu with 12 women in Accra for 30 years. Everyone built their first house from it."*
 
-[![Polkadot Hub](https://img.shields.io/badge/Network-Polkadot%20Hub%20Westend-E6007A)](https://westend-asset-hub-eth-rpc.polkadot.io)
+[![Polkadot Hub](https://img.shields.io/badge/Network-Passet%20Hub%20Testnet-E6007A)](https://services.polkadothub-rpc.com/testnet)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.24-blue)](https://soliditylang.org)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
@@ -43,6 +43,7 @@ Polkadot Hub (Asset Hub) is the ideal foundation for global community finance:
 | Feature | Why It Matters for Susu |
 |---------|------------------------|
 | **EVM Compatible** | Full Solidity support. Deploy and interact with familiar tooling (Hardhat, wagmi, viem). |
+| **PolkaVM Runtime** | Contracts are compiled with `resolc` to PolkaVM bytecode — more efficient and native to the Polkadot execution environment. |
 | **XCM Native** | Cross-Chain Messaging built into the protocol. Future: accept contributions from Celo, Base, any parachain — in one Susu pool. |
 | **Shared Security** | Protected by Polkadot's entire validator set (Nominated Proof-of-Stake). Your community's funds are guarded by institutional-grade security. |
 | **Low Fees** | Micro-contributions are economically viable. A $5 weekly contribution shouldn't cost $3 in gas. |
@@ -92,18 +93,21 @@ User → SusuPool.joinPool()      → Factory.registerMember()
                                  → PoolState = COMPLETED
 ```
 
-## Contract Addresses (Westend Testnet)
+---
 
-> Run `pnpm contracts:deploy` (or `node contracts/scripts/deploy-direct.ts`) to deploy, then copy the addresses below from `contracts/deployments/westend.json`.
+## Deployed Contract Addresses (Passet Hub Testnet)
+
+> Live on **Passet Hub** (Polkadot's smart contract testnet, chain ID `420420417`).
 
 | Contract | Address |
 |----------|---------|
-| MockUSDC | `TBD (see contracts/deployments/westend.json)` |
-| ReputationRegistry | `TBD (see contracts/deployments/westend.json)` |
-| SusuFactory | `TBD (see contracts/deployments/westend.json)` |
-| Demo Pool | `TBD (see contracts/deployments/westend.json)` |
+| MockUSDC | `0xF7d2d01Ab847FCaC754DEd3DD14813Fb1306d946` |
+| ReputationRegistry | `0x08250Af4b0CbF75F9929F2abf622C0d7Ba9B02dd` |
+| SusuFactory | `0x92Da3B4d1611C7f06EE4FBB57854B2D23EB6190B` |
+| SusuPool (demo) | `0xB4260c5d4b4977e79F5ad9Db45aA884520148E45` |
 
-**Block Explorer**: https://blockscout.westend.asset-hub.paritytech.net
+**Deployer wallet**: `0xC65C290DB6Eab614A5076FA800e28B8381223Ed8`
+**Block Explorer**: https://blockscout-passet-hub.parity-testnet.parity.io
 
 ---
 
@@ -113,7 +117,7 @@ User → SusuPool.joinPool()      → Factory.registerMember()
 
 - Node.js >= 18
 - pnpm >= 8
-- A wallet with WND testnet tokens ([faucet](https://faucet.polkadot.io))
+- A wallet with PAS testnet tokens ([faucet](https://faucet.polkadot.io/?parachain=1111))
 
 ### 1. Clone and install
 
@@ -128,38 +132,71 @@ pnpm install
 ```bash
 cd contracts
 cp .env.example .env
-# Edit .env and add your PRIVATE_KEY (with leading 0x)
+# Edit .env — add your PRIVATE_KEY (without leading 0x) and set WESTEND_RPC_URL
 ```
 
-> **Note:** The Hardhat config pins `evmVersion = "paris"` and uses fixed `gasPrice`/`gas` values to avoid estimation issues on Westend.
+Your `.env` should look like:
+
+```
+PRIVATE_KEY=your_64_char_hex_private_key_here
+WESTEND_RPC_URL=https://services.polkadothub-rpc.com/testnet
+BLOCKSCOUT_API_KEY=
+```
 
 ### 3. Compile contracts
+
+Contracts must be compiled with **resolc** (not standard solc) to produce PolkaVM bytecode. The `polkadot: true` flag on the `westend` network in `hardhat.config.ts` triggers this automatically when deploying.
 
 ```bash
 pnpm contracts:compile
 ```
 
+> You will see Polkadot-specific warnings about `extcodesize` from OpenZeppelin's SafeERC20 — these are expected and harmless.
+
 ### 4. Run tests
 
 ```bash
 pnpm contracts:test
+# 55/55 tests passing
 ```
 
-### 5. Deploy to Westend testnet
+### 5. Deploy to Passet Hub testnet
+
+**Get PAS test tokens first:**
+1. Go to https://faucet.polkadot.io/?parachain=1111
+2. Select **Paseo** network, parachain **1111**
+3. Enter your EVM wallet address
+4. The faucet accepts EVM (H160) addresses directly
+
+**Deploy:**
 
 ```bash
-pnpm contracts:deploy
-# This outputs contract addresses to contracts/deployments/westend.json
-# and prints them to console
+# Option A — via Hardhat (recommended, auto-compiles with resolc)
+pnpm contracts:deploy:westend
+
+# Option B — direct Node script (more control, type-0 transactions)
+node contracts/scripts/deploy-direct.js
 ```
+
+> **Important gas note:** Passet Hub's base gas price is **1,000 gwei** (1,000,000,000,000 wei). The deploy scripts are configured with `gasPrice: 1,500,000,000,000` (1,500 gwei) to stay above the base fee. Standard 1 gwei will be rejected with `Invalid Transaction`.
+
+The deploy script outputs addresses to `contracts/deployments/westend.json` and copies them to `frontend/src/lib/deployments.json`.
 
 ### 6. Configure frontend
 
 ```bash
 cd frontend
 cp .env.local.example .env.local
-# Fill in the contract addresses from step 5
-# Add your WalletConnect Project ID from https://cloud.walletconnect.com
+```
+
+Fill in `frontend/.env.local`:
+
+```
+NEXT_PUBLIC_CHAIN_ID=420420417
+NEXT_PUBLIC_FACTORY_ADDRESS=0x92Da3B4d1611C7f06EE4FBB57854B2D23EB6190B
+NEXT_PUBLIC_REPUTATION_ADDRESS=0x08250Af4b0CbF75F9929F2abf622C0d7Ba9B02dd
+NEXT_PUBLIC_MOCKUSDC_ADDRESS=0xF7d2d01Ab847FCaC754DEd3DD14813Fb1306d946
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_from_cloud_walletconnect_com
 ```
 
 ### 7. Run the frontend
@@ -178,6 +215,7 @@ pnpm contracts:test
 ```
 
 Expected output:
+
 ```
   ReputationRegistry
     Initial state
@@ -209,8 +247,45 @@ Expected output:
       ✓ should refund current cycle contributions on cancel
       ✓ should allow cancellation if 75% of members vote
 
-  XX passing (Xs)
+  55 passing
 ```
+
+---
+
+## Network Details
+
+### Passet Hub Testnet (current deployment)
+
+```
+Network Name:  Passet Hub Testnet
+RPC URL:       https://services.polkadothub-rpc.com/testnet
+Alt RPC URL:   https://eth-rpc-testnet.polkadot.io
+Chain ID:      420420417
+Symbol:        PAS
+Decimals:      18
+Explorer:      https://blockscout-passet-hub.parity-testnet.parity.io
+```
+
+> **Note:** The old Westend Asset Hub RPC (`https://westend-asset-hub-eth-rpc.polkadot.io`, chain ID `420420421`) has a metadata mismatch and should not be used. Use the Passet Hub endpoints above.
+
+### Getting PAS Test Tokens
+
+1. Visit https://faucet.polkadot.io/?parachain=1111
+2. Select **Paseo** network
+3. Enter your EVM wallet address (e.g. `0xYourAddress`)
+4. Submit — tokens arrive within 1-2 minutes via XCM
+
+> The faucet is rate-limited to once per day per IP/address.
+
+### Adding Passet Hub to MetaMask
+
+| Setting | Value |
+|---------|-------|
+| Network Name | Passet Hub Testnet |
+| RPC URL | `https://services.polkadothub-rpc.com/testnet` |
+| Chain ID | `420420417` |
+| Currency Symbol | `PAS` |
+| Explorer URL | `https://blockscout-passet-hub.parity-testnet.parity.io` |
 
 ---
 
@@ -220,21 +295,13 @@ Expected output:
 
 Open the app, click "Connect Wallet", and select your wallet (MetaMask, Rabby, etc.).
 
-### Step 2: Add Westend Asset Hub Network
+### Step 2: Add Passet Hub Network
 
-If your wallet doesn't have Westend Asset Hub, the app will prompt you to add it:
+If your wallet doesn't have Passet Hub, the app will prompt you to add it using the network details above.
 
-| Setting | Value |
-|---------|-------|
-| Network Name | Westend Asset Hub |
-| RPC URL | `https://westend-asset-hub-eth-rpc.polkadot.io` |
-| Chain ID | `420420421` |
-| Currency Symbol | `WND` |
-| Explorer URL | `https://blockscout.westend.asset-hub.paritytech.net` |
+### Step 3: Get Test PAS (Gas)
 
-### Step 3: Get Test WND (Gas)
-
-Visit the [Polkadot Faucet](https://faucet.polkadot.io) and request WND for the Westend Asset Hub chain. You'll need this for gas fees.
+Visit the [Polkadot Faucet](https://faucet.polkadot.io/?parachain=1111) and request PAS for Passet Hub (parachain 1111, Paseo network).
 
 ### Step 4: Get Test mUSDC
 
@@ -259,29 +326,15 @@ Every on-time contribution: **+10 points**. Late contributions (within grace per
 
 ---
 
-## Testnet Setup
-
-### Network Details
-
-```
-Network Name:  Westend Asset Hub
-RPC URL:       https://westend-asset-hub-eth-rpc.polkadot.io
-Chain ID:      420420421
-Symbol:        WND
-Decimals:      18
-Explorer:      https://blockscout.westend.asset-hub.paritytech.net
-```
-
-### Getting WND Test Tokens
-
-1. Visit https://faucet.polkadot.io
-2. Select "Westend Asset Hub"
-3. Enter your address
-4. Click "Get some WND"
-
----
-
 ## Smart Contract Design Decisions
+
+### PolkaVM Compilation (resolc)
+
+Contracts are compiled with `@parity/hardhat-polkadot-resolc` (resolc v1.0.0) instead of standard solc. Setting `polkadot: true` on the Hardhat network config triggers resolc automatically during `hardhat run --network westend`. PolkaVM bytecode starts with the magic bytes `0x50564d` ("PVM"). Standard EVM bytecode is rejected by the Passet Hub runtime with error `1010: Invalid Transaction`.
+
+### Gas Settings
+
+Passet Hub uses a base fee of 1,000 gwei. Deploy transactions use `gasPrice: 1,500,000,000,000` (1,500 gwei) and `gasLimit: 10,000,000`. These are set explicitly as legacy type-0 transactions to avoid EIP-1559 estimation issues.
 
 ### Reputation Score Initialisation
 
@@ -312,7 +365,8 @@ susu-protocol/
 │   │   ├── SusuPool.sol           Individual savings circle
 │   │   └── SusuFactory.sol        Pool deployer + registry
 │   ├── scripts/
-│   │   ├── deploy.ts              Full deployment script
+│   │   ├── deploy.ts              Hardhat deployment script
+│   │   ├── deploy-direct.js       Direct ethers.js deploy (type-0 txs)
 │   │   └── verify.ts              Blockscout verification
 │   ├── test/
 │   │   ├── SusuPool.test.ts       Pool lifecycle tests
@@ -340,10 +394,12 @@ susu-protocol/
 ### v1 (Current — Hackathon)
 - [x] Full Susu pool lifecycle (join → contribute → payout)
 - [x] On-chain reputation system
-- [x] Testnet deployment (Westend Asset Hub)
+- [x] Deployed to Passet Hub testnet (chain ID 420420417)
 - [x] Production-quality frontend
+- [x] 55/55 tests passing
 
 ### v2 (Post-hackathon)
+- [ ] **Fix factory pool creation on PolkaVM** — Work around `new SusuPool()` CREATE limitation using a clone/proxy pattern or pre-authorized pool registry
 - [ ] **XCM cross-chain contributions** — Accept mUSDC from Moonbeam, Acala, or any EVM parachain via XCM
 - [ ] **Mobile-first PWA** — Installable progressive web app optimized for mobile users in Africa
 - [ ] **Operator dashboard** — Member management, approval workflows, private pool invites
@@ -367,9 +423,20 @@ susu-protocol/
 
 ---
 
+## Known Issues & Limitations
+
+| Issue | Status | Notes |
+|-------|--------|-------|
+| `SusuFactory.createPool()` reverts on Passet Hub | Known | PolkaVM restricts `new Contract()` inside contracts. Workaround: deploy SusuPool directly using `deploy-direct.js`. Fix planned for v2. |
+| Old Westend RPC (`420420421`) broken | Resolved | Switched to Passet Hub (`420420417`) with working RPC. |
+| Standard EVM bytecode rejected | Resolved | Contracts now compiled with resolc to produce PolkaVM bytecode. |
+| Gas price too low | Resolved | Updated to 1,500 gwei (above Passet Hub's 1,000 gwei base fee). |
+
+---
+
 ## Team
 
-Built for the Polkadot Solidity Hackathon 2026.
+Built for the **Polkadot Solidity Hackathon 2026**.
 
 ---
 
@@ -394,4 +461,3 @@ pnpm contracts:test
 ## Contact
 
 - Maintainer: AkakpoErnest — open an issue for questions or feature requests.
-

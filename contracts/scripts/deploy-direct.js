@@ -5,8 +5,8 @@ require('dotenv').config();
 
 const RPC_URL = process.env.WESTEND_RPC_URL || 'https://westend-asset-hub-eth-rpc.polkadot.io';
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const GAS_LIMIT = 5_000_000n;
-const GAS_PRICE = 1_000_000_000n; // 1 gwei
+const GAS_LIMIT = 10_000_000n;
+const GAS_PRICE = 1_500_000_000_000n; // 1500 gwei (above 1000 gwei base fee on Passet Hub)
 const TX_OVERRIDES = { gasLimit: GAS_LIMIT, gasPrice: GAS_PRICE, type: 0 };
 
 async function deployContract(wallet, artifactPath, constructorArgs = []) {

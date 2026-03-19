@@ -119,10 +119,14 @@
   to   { transform: rotate(360deg); }
 }
 
-.animate-fade-in-up { animation: fadeInUp 0.55s ease-out both; }
-.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
-.animate-float      { animation: float 4s ease-in-out infinite; }
-.animate-spin-slow  { animation: spin-slow 12s linear infinite; }
+.animate-fade-in-up  { animation: fadeInUp 0.55s ease-out both; }
+.animate-fade-in-up-1 { animation: fadeInUp 0.6s ease-out 0.1s both; }
+.animate-fade-in-up-2 { animation: fadeInUp 0.6s ease-out 0.25s both; }
+.animate-fade-in-up-3 { animation: fadeInUp 0.6s ease-out 0.45s both; }
+.animate-fade-in-up-4 { animation: fadeInUp 0.6s ease-out 0.65s both; }
+.animate-glow-pulse  { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-float       { animation: float 4s ease-in-out infinite; }
+.animate-spin-slow   { animation: spin-slow 12s linear infinite; }
 
 .skeleton {
   background: linear-gradient(90deg, #16213e 25%, #1a2f50 50%, #16213e 75%);

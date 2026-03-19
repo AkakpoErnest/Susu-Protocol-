@@ -8,7 +8,7 @@ import { ArrowRight, Shield, Users, TrendingUp, MapPin, Quote } from 'lucide-rea
 export const metadata: Metadata = {
   title: 'Susu Protocol — Decentralized Rotating Savings on Polkadot',
   description:
-    'Join the on-chain Susu movement. Trustless rotating savings inspired by West African tradition. Built on Polkadot Hub.',
+    'Join the on-chain Susu movement. Trustless rotating savings inspired by West African tradition — Susu, Ajo, Tontine. Save together with your community, anywhere in the world. Built on Polkadot Hub.',
 };
 
 export default function LandingPage() {
@@ -32,13 +32,13 @@ export default function LandingPage() {
           <div className="relative page-container py-24 md:py-32">
             <div className="max-w-4xl">
               {/* Tag */}
-              <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 text-accent text-sm font-medium px-4 py-2 rounded-full mb-8">
+              <div className="animate-fade-in-up-1 inline-flex items-center gap-2 bg-accent/10 border border-accent/20 text-accent text-sm font-medium px-4 py-2 rounded-full mb-8">
                 <span className="w-2 h-2 bg-accent rounded-full animate-pulse-slow" />
                 Live on Polkadot Hub Westend Testnet
               </div>
 
               {/* Headline */}
-              <h1 className="font-heading font-bold text-5xl md:text-7xl text-text-primary leading-tight mb-6">
+              <h1 className="animate-fade-in-up-2 font-heading font-bold text-5xl md:text-7xl text-text-primary leading-tight mb-6">
                 Your Community.{' '}
                 <br />
                 Your Capital.{' '}
@@ -46,14 +46,14 @@ export default function LandingPage() {
                 <span className="gradient-text">On-Chain.</span>
               </h1>
 
-              <p className="text-xl text-gray-300 max-w-2xl mb-10 leading-relaxed">
+              <p className="animate-fade-in-up-3 text-xl text-gray-300 max-w-2xl mb-10 leading-relaxed">
                 Susu Protocol brings the ancient rotating savings tradition of West Africa to
                 Polkadot — trustless, transparent, and borderless. Every contribution builds
                 your on-chain reputation.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="animate-fade-in-up-4 flex flex-col sm:flex-row gap-4">
                 <Link href="/dashboard" className="btn-primary flex items-center justify-center gap-2 text-lg">
                   Launch App <ArrowRight size={20} />
                 </Link>

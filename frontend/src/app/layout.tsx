@@ -21,19 +21,59 @@ export const metadata: Metadata = {
     template: '%s | Susu Protocol',
   },
   description:
-    'Susu Protocol brings the ancient rotating savings tradition of West Africa to Polkadot — trustless, transparent, and borderless. Join a circle, contribute, and build your on-chain reputation.',
-  keywords: ['susu', 'polkadot', 'rotating savings', 'DeFi', 'tontine', 'ajo', 'blockchain'],
+    'Susu Protocol brings the ancient rotating savings tradition of West Africa to Polkadot — trustless, transparent, and borderless. Join a savings circle, contribute every cycle, and build your on-chain reputation. No bank required.',
+  keywords: [
+    // Core product
+    'susu', 'ajo', 'tontine', 'djanggi', 'ekub', 'paluwagan',
+    'rotating savings', 'rotating credit association', 'ROSCA',
+    'community savings', 'savings circle', 'savings group', 'savings club',
+    // Web3 / DeFi
+    'DeFi', 'decentralized finance', 'blockchain savings', 'on-chain savings',
+    'smart contract savings', 'crypto savings', 'Web3 community',
+    'trustless savings', 'transparent savings',
+    // Polkadot
+    'Polkadot', 'Polkadot Hub', 'Passet Hub', 'Polkadot EVM', 'PAS token',
+    // Audience
+    'African diaspora finance', 'community finance', 'group savings',
+    'peer savings', 'cooperative savings', 'financial inclusion',
+    'unbanked', 'microfinance', 'community wealth',
+    // Discovery
+    'save money with friends', 'group investment', 'rotating pot',
+    'money circle', 'savings pool', 'contribution pool',
+  ],
+  authors: [{ name: 'Susu Protocol' }],
+  creator: 'Susu Protocol',
+  metadataBase: new URL('https://susu-protocol.xyz'),
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
-    title: 'Susu Protocol',
-    description: 'Decentralized rotating savings on Polkadot Hub',
+    url: 'https://susu-protocol.xyz',
+    title: 'Susu Protocol — Save Together, On-Chain',
+    description:
+      'Join a trustless savings circle on Polkadot. Inspired by the ancient Susu/Ajo/Tontine tradition — now borderless, transparent, and unstoppable.',
     siteName: 'Susu Protocol',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Susu Protocol',
-    description: 'Decentralized rotating savings on Polkadot Hub',
+    title: 'Susu Protocol — Save Together, On-Chain',
+    description:
+      'Trustless rotating savings on Polkadot. Join a circle, contribute every cycle, build your reputation. No bank required.',
+    creator: '@SusuProtocol',
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+    },
+  },
+  category: 'finance',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
