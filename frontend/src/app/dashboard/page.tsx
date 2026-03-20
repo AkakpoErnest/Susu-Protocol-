@@ -13,7 +13,7 @@ import { ReputationHistory } from '@/components/reputation/ReputationHistory';
 import { useMockUSDCBalance, useFaucet, useTimeUntilNextClaim } from '@/hooks/useMockUSDC';
 import { usePoolsByMember, useAllPools } from '@/hooks/useFactory';
 import { useReputation } from '@/hooks/useReputation';
-import { westendAssetHub } from '@/lib/wagmi';
+import { passetHub } from '@/lib/wagmi';
 import { formatUSDC, formatWND, formatCountdown, explorerTx, TIER_DESCRIPTIONS } from '@/lib/utils';
 import { CONTRACT_ADDRESSES } from '@/lib/contracts';
 import { Wallet, Coins, Droplets, RefreshCw, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
@@ -29,7 +29,7 @@ export default function DashboardPage() {
   // Balances
   const { data: wndBalance } = useBalance({
     address,
-    chainId: westendAssetHub.id,
+    chainId: passetHub.id,
     query: { enabled: !!address, refetchInterval: 15_000 },
   });
   const { data: usdcBalance, refetch: refetchUSDC } = useMockUSDCBalance(address);
@@ -62,7 +62,7 @@ export default function DashboardPage() {
   // Reputation
   const { score, tier, history, poolsCompleted } = useReputation(address);
 
-  const isWrongNetwork = isConnected && chain?.id !== westendAssetHub.id;
+  const isWrongNetwork = isConnected && chain?.id !== passetHub.id;
   const canClaimFaucet = !cooldown || cooldown === 0n;
 
   if (!isConnected) {
