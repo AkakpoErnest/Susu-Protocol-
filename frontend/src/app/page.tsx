@@ -19,8 +19,9 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* ─── Hero ─────────────────────────────────────────────── */}
         <section className="relative overflow-hidden">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-surface to-card opacity-80" />
+          {/* Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-surface to-card opacity-90" />
+          <div className="absolute inset-0 opacity-25 bg-right-top bg-contain bg-no-repeat" style={{ backgroundImage: "url('/hero-bg.png')" }} />
           <div
             className="absolute inset-0 opacity-5"
             style={{

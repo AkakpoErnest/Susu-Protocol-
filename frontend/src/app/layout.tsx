@@ -55,6 +55,7 @@ export const metadata: Metadata = {
       'Join a trustless savings circle on Polkadot. Inspired by the ancient Susu/Ajo/Tontine tradition — now borderless, transparent, and unstoppable.',
     siteName: 'Susu Protocol',
     locale: 'en_US',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Susu Protocol' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -62,6 +63,7 @@ export const metadata: Metadata = {
     description:
       'Trustless rotating savings on Polkadot. Join a circle, contribute every cycle, build your reputation. No bank required.',
     creator: '@SusuProtocol',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
