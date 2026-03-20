@@ -4,24 +4,24 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { defineChain } from 'viem';
 import { http } from 'wagmi';
 
-// Polkadot Hub Westend Testnet (EVM)
-export const westendAssetHub = defineChain({
-  id: 420420421,
-  name: 'Westend Asset Hub',
+// Polkadot Hub Passet Hub Testnet (EVM)
+export const passetHub = defineChain({
+  id: 420420417,
+  name: 'Passet Hub',
   nativeCurrency: {
     decimals: 18,
-    name: 'Westend',
-    symbol: 'WND',
+    name: 'Paseo',
+    symbol: 'PAS',
   },
   rpcUrls: {
     default: {
-      http: ['https://westend-asset-hub-eth-rpc.polkadot.io'],
+      http: ['https://services.polkadothub-rpc.com/testnet'],
     },
   },
   blockExplorers: {
     default: {
       name: 'Blockscout',
-      url: 'https://blockscout.westend.asset-hub.paritytech.net',
+      url: 'https://blockscout-passet-hub.parity-testnet.parity.io',
     },
   },
   testnet: true,
@@ -30,9 +30,9 @@ export const westendAssetHub = defineChain({
 export const wagmiConfig = getDefaultConfig({
   appName: 'Susu Protocol',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'susu-protocol-dev',
-  chains: [westendAssetHub],
+  chains: [passetHub],
   transports: {
-    [westendAssetHub.id]: http('https://westend-asset-hub-eth-rpc.polkadot.io'),
+    [passetHub.id]: http('https://services.polkadothub-rpc.com/testnet'),
   },
   ssr: true,
 });
