@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { cn } from '@/lib/utils';
-import { Users, LayoutDashboard, Plus, Search } from 'lucide-react';
+import { LayoutDashboard, Plus, Search } from 'lucide-react';
 
 const navLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -22,13 +23,15 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center">
-              <span className="text-primary font-heading font-bold text-sm">S</span>
-            </div>
-            <span className="font-heading font-bold text-lg text-text-primary group-hover:text-accent transition-colors">
-              Susu<span className="text-accent">.</span>
-            </span>
+          <Link href="/" className="flex items-center group">
+            <Image
+              src="/logo.png"
+              alt="Susu Protocol"
+              width={160}
+              height={40}
+              className="h-9 w-auto object-contain group-hover:opacity-90 transition-opacity"
+              priority
+            />
           </Link>
 
           {/* Nav Links - hidden on mobile */}
